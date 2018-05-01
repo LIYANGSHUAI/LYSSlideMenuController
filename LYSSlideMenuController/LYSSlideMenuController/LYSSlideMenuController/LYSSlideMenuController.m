@@ -123,6 +123,7 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     [self menuScrollToCenter:self.currentItem];
     [self menuUpdateBottomLine:self.currentItem];
     [self motionChangePage:self.currentItem];
+    self.lastIndex = self.currentItem;
 }
 
 #pragma mark - 加载基本视图 -
@@ -199,6 +200,7 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
             [self menuScrollToCenter:index];
             [self menuUpdateBottomLine:index];
             [self motionChangePage:index];
+            self.lastIndex = index;
         }
     }
 }
@@ -212,6 +214,7 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
         [self menuUpdateBottomLine:index];
         [self contentScrollToCenter:index];
         [self motionChangePage:index];
+        self.lastIndex = index;
     }
 }
 
@@ -228,13 +231,13 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
             objc_setAssociatedObject(currentVC, @"lysIsLoad", @(YES), OBJC_ASSOCIATION_ASSIGN);
         }
         if ([lastVC respondsToSelector:@selector(slideMenuController:viewWillDisappear:)]) {
-            [lastVC slideMenuController:self viewWillDisappear:index];
+            [lastVC slideMenuController:self viewWillDisappear:self.lastIndex];
         }
         if ([currentVC respondsToSelector:@selector(slideMenuController:viewWillAppear:)]) {
             [currentVC slideMenuController:self viewWillAppear:index];
         }
         if ([lastVC respondsToSelector:@selector(slideMenuController:viewDidDisappear:)]) {
-            [lastVC slideMenuController:self viewWillDisappear:index];
+            [lastVC slideMenuController:self viewDidDisappear:self.lastIndex];
         }
         if ([currentVC respondsToSelector:@selector(slideMenuController:viewDidAppear:)]) {
             [currentVC slideMenuController:self viewDidAppear:index];
@@ -252,7 +255,6 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
             [currentVC slideMenuController:self viewDidAppear:index];
         }
     }
-    self.lastIndex = index;
 }
 
 // 内容滚动

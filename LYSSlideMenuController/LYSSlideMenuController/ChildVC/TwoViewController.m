@@ -27,7 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.view.backgroundColor = [UIColor lightGrayColor];
 }
 
 - (void)addRefresh{
@@ -91,19 +90,19 @@
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController viewWillDisappear:(NSInteger)index{
-    NSLog(@"将要消失");
+    NSLog(@"将要消失---%ld",index);
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController viewDidDisappear:(NSInteger)index{
-    NSLog(@"已经消失");
+    NSLog(@"已经消失---%ld",index);
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController viewWillAppear:(NSInteger)index{
-    NSLog(@"将要出现");
+    NSLog(@"将要出现---%ld",index);
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController viewDidAppear:(NSInteger)index{
-    NSLog(@"已经出现");
+    NSLog(@"已经出现---%ld",index);
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{

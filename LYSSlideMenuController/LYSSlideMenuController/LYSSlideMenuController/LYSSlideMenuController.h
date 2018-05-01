@@ -13,7 +13,7 @@
 @protocol LYSSlideMenuControllerDelegate<NSObject>
 
 /**
- 子视图第一次加载页面,和系统的viewDidLoad方法具有一样的效果,视图第一次加载时执行
+ 子视图第一次加载页面,和系统的viewDidLoad方法具有一样的效果,视图第一次加载时执行,因此在使用这个第三方的时候,要把viewDidLoad里面的操作放到这个代理方法里面执行,避免出现一些布局错乱的问题
 
  @param slideMenuController 主视图控制器
  @param index 页面下标
@@ -38,7 +38,6 @@
  一个页面显示几个按钮
  */
 @property (nonatomic,assign)NSInteger pageNumberOfItem;
-
 
 @property (nonatomic,assign)NSInteger currentItem;
 @property (nonatomic,assign)CGFloat menuHeight;
