@@ -13,7 +13,7 @@
 @protocol LYSSlideMenuControllerDelegate<NSObject>
 
 /**
- 子视图第一次加载页面
+ 子视图第一次加载页面,和系统的viewDidLoad方法具有一样的效果,视图第一次加载时执行
 
  @param slideMenuController 主视图控制器
  @param index 页面下标
@@ -30,6 +30,9 @@
 @end
 
 @interface LYSSlideMenuController : UIViewController
+
+@property (nonatomic,strong,readonly)UIScrollView *menuScrollView;
+@property (nonatomic,strong,readonly)UIScrollView *contentScrollView;
 
 /**
  一个页面显示几个按钮

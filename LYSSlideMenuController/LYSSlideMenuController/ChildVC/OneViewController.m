@@ -27,10 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.view addSubview:self.tableView];
-    
-    [self addRefresh];
 }
 
 - (void)addRefresh{
@@ -38,6 +34,54 @@
         [self show];
         
         NSArray *dataAry = @[@{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
+                                 @"name": @"数码产品",
+                                 @"detail": @"手机,电脑等",
+                                 },
+                             @{
                                  @"name": @"数码产品",
                                  @"detail": @"手机,电脑等",
                                  },
@@ -64,6 +108,9 @@
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController didViewDidLoad:(NSInteger)index{
+    [self.view addSubview:self.tableView];
+    
+    [self addRefresh];
     [self show];
     
     NSArray *dataAry = @[@{

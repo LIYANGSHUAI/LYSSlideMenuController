@@ -20,17 +20,21 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
 
 @interface LYSSlideMenuController ()<UIScrollViewDelegate>
 
-@property (nonatomic,strong)UIScrollView *menuScrollView;
-@property (nonatomic,strong)UIScrollView *contentScrollView;
+@property (nonatomic,strong,readwrite)UIScrollView *menuScrollView;
+@property (nonatomic,strong,readwrite)UIScrollView *contentScrollView;
+
 @property (nonatomic,strong)NSMutableArray *labelArys;
+
 @property (nonatomic,assign)NSInteger lastIndex;
+
 @property (nonatomic,strong)UIView *bottomLine;
 
 @end
 
 @implementation LYSSlideMenuController
 
-- (BOOL)superExistNav{
+- (BOOL)superExistNav
+{
     UIViewController *parentVC = self;
     while (parentVC != nil && ![parentVC isKindOfClass:[UINavigationController class]]) {
         parentVC = parentVC.parentViewController;
@@ -38,7 +42,8 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     return [parentVC isKindOfClass:[UINavigationController class]];
 }
 
-- (BOOL)superExistTab{
+- (BOOL)superExistTab
+{
     UIViewController *parentVC = self;
     while (parentVC != nil && ![parentVC isKindOfClass:[UITabBarController class]]) {
         parentVC = parentVC.parentViewController;
@@ -46,30 +51,8 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     return [parentVC isKindOfClass:[UITabBarController class]];
 }
 
-- (UIScrollView *)menuScrollView {
-    if (!_menuScrollView) {
-        _menuScrollView = [[UIScrollView alloc] init];
-        _menuScrollView.showsHorizontalScrollIndicator = NO;
-        _menuScrollView.delegate = self;
-        _menuScrollView.tag = LYSScrollViewType_menu;
-        _menuScrollView.bounces = NO;
-    }
-    return _menuScrollView;
-}
-
-- (UIScrollView *)contentScrollView {
-    if (!_contentScrollView) {
-        _contentScrollView = [[UIScrollView alloc] init];
-        _contentScrollView.showsHorizontalScrollIndicator = NO;
-        _contentScrollView.pagingEnabled = YES;
-        _contentScrollView.delegate = self;
-        _contentScrollView.tag = LYSScrollViewType_content;
-        _contentScrollView.bounces = NO;
-    }
-    return _contentScrollView;
-}
-
-- (UIView *)bottomLine {
+- (UIView *)bottomLine
+{
     if (!_bottomLine) {
         _bottomLine = [[UIView alloc] init];
         _bottomLine.backgroundColor = self.bottomLineColor;
@@ -77,32 +60,36 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     return _bottomLine;
 }
 
-- (CGFloat)menuHeight {
+- (CGFloat)menuHeight
+{
     if (_menuHeight == 0) {
         _menuHeight = 40;
     }
     return _menuHeight;
 }
 
-- (NSInteger)pageNumberOfItem{
+- (NSInteger)pageNumberOfItem
+{
     if (_pageNumberOfItem == 0) {
         _pageNumberOfItem = (self.titles.count > 5 ? 5 : self.titles.count);
     }
     return _pageNumberOfItem;
 }
 
-- (NSMutableArray *)labelArys{
-    if (!_labelArys) {
-        _labelArys = [NSMutableArray array];
-    }
-    return _labelArys;
-}
-
-- (CGFloat)bottomLineWidth{
+- (CGFloat)bottomLineWidth
+{
     if (_bottomLineWidth == 0 || _bottomLineWidth > ScreenWidth / self.pageNumberOfItem) {
         _bottomLineWidth = ScreenWidth / self.pageNumberOfItem;
     }
     return _bottomLineWidth;
+}
+
+- (NSMutableArray *)labelArys
+{
+    if (!_labelArys) {
+        _labelArys = [NSMutableArray array];
+    }
+    return _labelArys;
 }
 
 - (instancetype)init
@@ -121,15 +108,14 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     return self;
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     self.view.backgroundColor = [UIColor whiteColor];
     
     [self customBaseView];
-    
     [self customTopView];
-    
     [self customBottomView];
     
     // 默认选中第一个
@@ -139,25 +125,37 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
     [self motionChangePage:self.currentItem];
 }
 
-// 加载视图
-- (void)customBottomView{
+#pragma mark - 加载基本视图 -
+- (void)customBaseView
+{
+    CGFloat navHeight = [self superExistNav] ? 64 : 0;
+    CGFloat tabHeight = [self superExistTab] ? 49 : 0;
+    self.menuScrollView = [[UIScrollView alloc] init];
+    self.menuScrollView.showsHorizontalScrollIndicator = NO;
+    self.menuScrollView.delegate = self;
+    self.menuScrollView.tag = LYSScrollViewType_menu;
+    [self.view addSubview:self.menuScrollView];
+    self.menuScrollView.frame = Rect(0, navHeight, ScreenWidth, self.menuHeight);
     
-    for (int i = 0; i < self.controllers.count; i++) {
-        UIViewController *vc = self.controllers[i];
-        vc.view.frame = Rect(ScreenWidth * i, 0, ScreenWidth, CGRectGetHeight(self.contentScrollView.frame));
-        [self addChildViewController:vc];
-        [self.contentScrollView addSubview:vc.view];
-        objc_setAssociatedObject(vc, @"lysIsLoad", @(NO), OBJC_ASSOCIATION_ASSIGN);
-    }
-    self.contentScrollView.contentSize = CGSizeMake(ScreenWidth * self.controllers.count, CGRectGetHeight(self.contentScrollView.frame));
-
+    UIView *line = [[UIView alloc] init];
+    line.frame = Rect(0, CGRectGetMaxY(self.menuScrollView.frame), ScreenWidth, 0.5);
+    line.backgroundColor = [UIColor lightGrayColor];
+    [self.view addSubview:line];
+    
+    self.contentScrollView = [[UIScrollView alloc] init];
+    self.contentScrollView.showsHorizontalScrollIndicator = NO;
+    self.contentScrollView.pagingEnabled = YES;
+    self.contentScrollView.delegate = self;
+    self.contentScrollView.tag = LYSScrollViewType_content;
+    self.contentScrollView.bounces = NO;
+    [self.view addSubview:self.contentScrollView];
+    self.contentScrollView.frame = Rect(0, CGRectGetMaxY(line.frame), ScreenWidth, ScreenHeight - navHeight - tabHeight - CGRectGetMaxY(line.frame) + CGRectGetMinY(self.menuScrollView.frame));
 }
 
 #pragma mark - 加载顶部视图数据 -
-- (void)customTopView{
-    
+- (void)customTopView
+{
     CGFloat itemWidth = ScreenWidth / self.pageNumberOfItem;
-    
     for (int i = 0; i < self.titles.count; i++) {
         UILabel *item = [[UILabel alloc] init];
         item.frame = Rect(itemWidth * i, 0, itemWidth, self.menuHeight);
@@ -173,31 +171,23 @@ typedef NS_ENUM(NSUInteger, LYSScrollViewType) {
         [self.labelArys addObject:item];
     }
     self.menuScrollView.contentSize = CGSizeMake(itemWidth * self.titles.count, self.menuHeight);
-    
     if (self.showBottomLine == YES) {
         self.bottomLine.frame = CGRectMake((self.currentItem * itemWidth) + ((itemWidth - self.bottomLineWidth) / 2.0), self.menuHeight - self.bottomLineHeight, self.bottomLineWidth, self.bottomLineHeight);
         [self.menuScrollView addSubview:self.bottomLine];
     }
-    
 }
 
-#pragma mark - 加载基本视图 -
-- (void)customBaseView{
-    
-    CGFloat navHeight = [self superExistNav] ? 64 : 0;
-    CGFloat tabHeight = [self superExistTab] ? 49 : 0;
-    
-    [self.view addSubview:self.menuScrollView];
-    self.menuScrollView.frame = Rect(0, navHeight, ScreenWidth, self.menuHeight);
-    
-    UIView *line = [[UIView alloc] init];
-    line.frame = Rect(0, CGRectGetMaxY(self.menuScrollView.frame), ScreenWidth, 0.5);
-    line.backgroundColor = [UIColor lightGrayColor];
-    [self.view addSubview:line];
-    
-    [self.view addSubview:self.contentScrollView];
-    self.contentScrollView.frame = Rect(0, CGRectGetMaxY(line.frame), ScreenWidth, ScreenHeight - navHeight - tabHeight - CGRectGetMaxY(line.frame) + CGRectGetMinY(self.menuScrollView.frame));
-    
+// 加载视图
+- (void)customBottomView
+{
+    for (int i = 0; i < self.controllers.count; i++) {
+        UIViewController *vc = self.controllers[i];
+        vc.view.frame = Rect(ScreenWidth * i, 0, ScreenWidth, CGRectGetHeight(self.contentScrollView.frame));
+        [self addChildViewController:vc];
+        [self.contentScrollView addSubview:vc.view];
+        objc_setAssociatedObject(vc, @"lysIsLoad", @(NO), OBJC_ASSOCIATION_ASSIGN);
+    }
+    self.contentScrollView.contentSize = CGSizeMake(ScreenWidth * self.controllers.count, CGRectGetHeight(self.contentScrollView.frame));
 }
 
 #pragma mark - scrollView代理方法 -

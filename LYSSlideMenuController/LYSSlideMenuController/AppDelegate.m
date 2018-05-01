@@ -48,7 +48,10 @@
     
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:slideMenu];
     
-    self.window .rootViewController = nav;
+    UITabBarController *tabBar = [[UITabBarController alloc] init];
+    tabBar.viewControllers = @[nav];
+    
+    self.window .rootViewController = tabBar;
     
     [self.window makeKeyAndVisible];
     

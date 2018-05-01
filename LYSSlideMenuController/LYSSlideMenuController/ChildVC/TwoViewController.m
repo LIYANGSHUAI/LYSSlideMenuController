@@ -27,9 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.view addSubview:self.tableView];
-    [self addRefresh];
+    self.view.backgroundColor = [UIColor lightGrayColor];
 }
 
 - (void)addRefresh{
@@ -63,6 +61,8 @@
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController didViewDidLoad:(NSInteger)index{
+    [self.view addSubview:self.tableView];
+    [self addRefresh];
     [self show];
     
     NSArray *dataAry = @[@{

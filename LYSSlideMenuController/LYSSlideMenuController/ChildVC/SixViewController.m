@@ -27,9 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
-    [self.view addSubview:self.tableView];
-    [self addRefresh];
 }
 - (void)addRefresh{
     self.tableView.mj_header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -62,6 +59,9 @@
 }
 
 - (void)slideMenuController:(LYSSlideMenuController *)slideMenuController didViewDidLoad:(NSInteger)index{
+    
+    [self.view addSubview:self.tableView];
+    [self addRefresh];
     [self show];
     
     NSArray *dataAry = @[@{
