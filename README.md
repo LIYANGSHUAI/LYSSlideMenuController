@@ -1,5 +1,7 @@
 # LYSSlideMenuController
 
+![效果图](https://github.com/LIYANGSHUAI/LYSSlideMenuController/blob/master/gif.gif)
+
 ```objc
 
 #import <UIKit/UIKit.h>
