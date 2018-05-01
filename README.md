@@ -1,7 +1,6 @@
 # LYSSlideMenuController
-LYSSlideMenuController
 
-![图片](https://github.com/LIYANGSHUAI/LYSSlideMenuController/blob/master/gif.gif)
+```objc
 
 #import <UIKit/UIKit.h>
 
@@ -59,3 +58,4 @@ LYSSlideMenuController
  */
 @property (nonatomic,strong)NSArray<UIViewController<LYSSlideMenuControllerDelegate> *> *controllers;
 @end
+```
